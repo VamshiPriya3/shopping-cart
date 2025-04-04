@@ -5,6 +5,6 @@ export const PRODUCTS = [
     { id: 4, name: "Smartwatch", price: 150 },
   ];
   
-  const FREE_GIFT = { id: 99, name: "Wireless Mouse", price: 0 };
-  const THRESHOLD = 1000;
+  export const FREE_GIFT = { id: 99, name: "Wireless Mouse", price: 0 };
+  export const THRESHOLD = 1000;
   

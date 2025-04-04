@@ -1,10 +1,10 @@
-import React,{ useState } from 'react';
-import ProductList from './components/ProductList';
-import Cart from './components/Cart';
-import {PRODUCTS, FREE_GIFT, THRESHOLD} from '.data/products';
+import React,{ useState,useEffect} from "react";
+import ProductList from "./components/ProductList";
+import Cart from "./components/Cart";
+import {PRODUCTS, FREE_GIFT, THRESHOLD} from ".data/products";
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
-import './App.css'
+import "./App.css";
 
 function App() {
   const [cart, setCart] = useState([])
@@ -30,7 +30,7 @@ function App() {
   const subtotal=getSubtotal();
   const hasGift=cart.find(item => item.id ===FREE_GIFT.id);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if(subtotal>= THRESHOLD && !hasGift){
       addToCart(FREE_GIFT);
     }else if (subtotal< THRESHOLD && hasGift){
@@ -44,9 +44,9 @@ function App() {
         <h1>Shopping cart</h1>
         <ProductList products ={PRODUCTS} addToCart={addToCart}/>
         <Cart cartItems={cart} removeFromCart={removeFromCart}/>
-        <p>Subtotal: ${subtotal}</p>
+        <p className="subtotal">Subtotal: ${subtotal}</p>
         {subtotal < THRESHOLD && (
-          <div className="progress-container">
+          <div className="gift-message">
             <p>Add $ {THRESHOLD -subtotal} more to get a free gift!</p>
         </div>)}
         </div>
