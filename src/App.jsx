@@ -1,7 +1,7 @@
 import React,{ useState,useEffect} from "react";
 import ProductList from "./components/ProductList";
 import Cart from "./components/Cart";
-import {PRODUCTS, FREE_GIFT, THRESHOLD} from ".data/products";
+import {PRODUCTS, FREE_GIFT, THRESHOLD} from "./data/products";
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import "./App.css";
@@ -23,7 +23,19 @@ function App() {
       
     }); 
   }
- 
+ const incrementQuantity=(id)=>{
+  setCart((prev)=>
+    prev.map((item)=>(item.id=== id?{...item,quantity:item.quantity+1}:item)
+)
+);
+ }
+  const decrementQuantity  =(id)=>{
+    setCart((prev)=>
+    prev.map((item)=>
+    item.id === id? {...item,quantity:item.quantity-1}:item
+  ).filter((item)=>item.quantity>0)
+);
+  }
   const removeFromCart=(id) =>
     setCart(prev => prev.filter(item =>item.id !== id));
   
@@ -41,15 +53,37 @@ function App() {
   return (
     
       <div className="container">
-        <h1>Shopping cart</h1>
+        <h1 className="main-heading">Shopping Cart App</h1>
         <ProductList products ={PRODUCTS} addToCart={addToCart}/>
-        <Cart cartItems={cart} removeFromCart={removeFromCart}/>
-        <p className="subtotal">Subtotal: ${subtotal}</p>
-        {subtotal < THRESHOLD && (
-          <div className="gift-message">
-            <p>Add $ {THRESHOLD -subtotal} more to get a free gift!</p>
-        </div>)}
+        
+        <h2 className="section-title">Cart Summary</h2>
+        
+        <div className="cart-summary-box">
+           <div className="summary-row">
+            <span>Subtotal:</span>
+            <span>₹{subtotal}</span>
+          </div>
+          <hr style={{width:"100%",height:"1px"}}/>
+          <div className="progress-container">
+            <div className="progress-bar" style={{width:`${(subtotal/THRESHOLD) * 100}%`,backgroundColor:subtotal>=THRESHOLD?"green":"blue",}}>
+
+            </div>
+          </div>
+          
+          {subtotal<THRESHOLD?(
+            <p  className="gift-info">Add ₹{THRESHOLD -subtotal}more to get a free gift!</p>
+
+          ):(
+            <p className="gift-info success">You've earned a free gift!</p>
+          )}
+          </div>
+          <h2 className="section-title">Cart Items</h2>
+          <div className="cart-summary-box">
+          
+          <Cart cartItems={cart} incrementQuantity={incrementQuantity} decrementQuantity={decrementQuantity}/>
         </div>
+        </div>
+        
   );
 }
    
